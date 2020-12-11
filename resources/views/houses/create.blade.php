@@ -31,6 +31,41 @@
                             @livewire('country-state-city')
 
                             <div class="form-group row">
+                                <label for="country"
+                                       class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" id="country_id">
+                                        <option value="" selected>Choose country</option>
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row d-none" id="state">
+                                <label for="state"
+                                       class="col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" id="state_id">
+                                        <option value="" selected>Choose state</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row d-none" id="city">
+                                <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
+
+                                <div class="col-md-6">
+                                    <select class="form-control" id="city_id">
+                                        <option value="" selected>Choose city</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="price"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Price (USD)') }}</label>
 
@@ -60,4 +95,48 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#country_id').change(function () {
+                var $state = $('#state_id');
+                $.ajax({
+                    url: "{{ route('states.index') }}",
+                    data: {
+                        country_id: $(this).val()
+                    },
+                    success: function (data) {
+                        $state.html('<option value="" selected>Choose state</option>');
+                        $.each(data, function (id, value) {
+                            $state.append('<option value="' + id + '">' + value + '</option>');
+                        });
+                    }
+                });
+
+                $('#state_id, #city_id').val("");
+                $('#state').removeClass('d-none');
+
+            });
+
+            $('#state_id').change(function () {
+                var $city = $('#city_id');
+                $.ajax({
+                    url: "{{ route('cities.index') }}",
+                    data: {
+                        state_id: $(this).val()
+                    },
+                    success: function (data) {
+                        $city.html('<option value="" selected>Choose city</option>');
+                        $.each(data, function (id, value) {
+                            $city.append('<option value="' + id + '">' + value + '</option>');
+                        });
+                    }
+                });
+                $('#city').removeClass('d-none');
+            });
+        });
+    </script>
 @endsection
