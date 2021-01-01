@@ -32,7 +32,7 @@
             <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
 
             <div class="col-md-6">
-                <select class="form-control" name="city_id">
+                <select wire:model="selectedCity" class="form-control" name="city_id">
                     <option value="" selected>Choose city</option>
                     @foreach($cities as $city)
                         <option value="{{ $city->id }}">{{ $city->name }}</option>

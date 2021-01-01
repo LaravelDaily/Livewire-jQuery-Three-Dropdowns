@@ -28,42 +28,7 @@
                                 </div>
                             </div>
 
-                            @livewire('country-state-city')
-
-                            <div class="form-group row">
-                                <label for="country"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
-
-                                <div class="col-md-6">
-                                    <select class="form-control" id="country_id">
-                                        <option value="" selected>Choose country</option>
-                                        @foreach($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group row d-none" id="state">
-                                <label for="state"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
-
-                                <div class="col-md-6">
-                                    <select class="form-control" id="state_id">
-                                        <option value="" selected>Choose state</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group row d-none" id="city">
-                                <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
-
-                                <div class="col-md-6">
-                                    <select class="form-control" id="city_id">
-                                        <option value="" selected>Choose city</option>
-                                    </select>
-                                </div>
-                            </div>
+                            @livewire('country-state-city', ['selectedCity' => 1])
 
                             <div class="form-group row">
                                 <label for="price"

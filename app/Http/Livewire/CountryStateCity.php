@@ -13,14 +13,26 @@ class CountryStateCity extends Component
     public $states;
     public $cities;
 
-    public $selectedCountry = NULL;
-    public $selectedState = NULL;
+    public $selectedCountry = null;
+    public $selectedState = null;
+    public $selectedCity = null;
 
-    public function mount()
+    public function mount($selectedCity = null)
     {
         $this->countries = Country::all();
         $this->states = collect();
         $this->cities = collect();
+        $this->selectedCity = $selectedCity;
+
+        if (!is_null($selectedCity)) {
+            $city = City::with('state.country')->find($selectedCity);
+            if ($city) {
+                $this->cities = City::where('state_id', $city->state_id)->get();
+                $this->states = State::where('country_id', $city->state->country_id)->get();
+                $this->selectedCountry = $city->state->country_id;
+                $this->selectedState = $city->state_id;
+            }
+        }
     }
 
     public function render()
